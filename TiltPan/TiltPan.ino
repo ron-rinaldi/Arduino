@@ -1,6 +1,9 @@
 
 #include <Servo.h>
 
+const int tiltservoPin = 10;
+const int panservoPin = 9;
+
 Servo tiltservo, panservo;
 
 // Set up initial values and range of motion
@@ -21,8 +24,8 @@ float panrate = 0.5;
 
 void setup() {
   // Attach output pins to servos.
-  tiltservo.attach(10);
-  panservo.attach(9);
+  tiltservo.attach( tiltservoPin);
+  panservo.attach( panservoPin);
   // May want to debug our pan, tilt settings.
   Serial.begin( 115200);
 }
