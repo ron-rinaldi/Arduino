@@ -13,10 +13,10 @@ float panmin = 1000;
 float panmax = 2000;
 
 // Set up parameters for moving servos.
-int pandir = 0;
-int tiltdir = 1;
+int pandir = 1;
+int tiltdir = 0;
 float tiltrate = 10;
-float panrate = 2.5;
+float panrate = 5;
 
 
 void setup() {

@@ -14,15 +14,13 @@ float panmin = 1000;
 float panmax = 2000;
 
 // Set up parameters for moving servos.
-int pandir = 0;
-int tiltdir = 1;
+int pandir = 1;
+int tiltdir = 0;
 float tiltrate = 10;
-float panrate = 2.5;
+float panrate = 5;
+float tiltaccel = 3.0;
+float panaccel = 10.0;
 
-int tiltsteps = (int)((tiltmax - tiltmin) / tiltrate);
-int tiltstep = 0;
-int pansteps = (int)((panmax - panmin) / panrate);
-int panstep = 0;
 
 void setup() {
   // Attach output pins to servos.
@@ -40,16 +38,19 @@ void printangles() {
   Serial.println();
 }
 
-float rate( int nsteps, int n) {
-  float f = (float)nsteps / 3.14159;
-  return sin( (float)n / f);  
+
+float rate( float pct, float accel) {
+  if (pct >= 0.5) {
+    pct = 1.0 - pct;
+  } 
+  if (pct < 0.02) pct = 0.02;
+  return pct * accel;
 }
+
 
 void loop() {
   // put your main code here, to run repeatedly:
   //printangles();
-  tiltstep += 1;
-  panstep += 1;
 
   // To write microsecond values, use servo.write( us)
   // To write degree values, use servo.write( degr)
@@ -58,15 +59,17 @@ void loop() {
 
   // Update servo angles based on their current
   // direction and rate
-  tiltpulse += (tiltdir * rate( tiltsteps, tiltstep) * tiltrate);
-  panpulse += (pandir * rate( pansteps, panstep) * panrate);
+  tiltpulse +=  tiltdir * tiltrate *
+                rate((tiltpulse-tiltmin)/(tiltmax-tiltmin), tiltaccel);
+  panpulse +=   pandir * panrate * 
+                rate((panpulse-panmin)/(panmax-panmin), panaccel);
 
   // Change direction at min or max values
-  if (tiltpulse >= tiltmax) { tiltdir = -1; tiltstep = 0; }
-  if (tiltpulse <= tiltmin) { tiltdir = 1; tiltstep = 0; }
+  if (tiltpulse >= tiltmax) tiltdir = -1;
+  if (tiltpulse <= tiltmin) tiltdir = 1;
   
-  if (panpulse >= panmax) { pandir = -1; panstep = 0; }
-  if (panpulse <= panmin) { pandir = 1;  panstep = 0; }
+  if (panpulse >= panmax)  pandir = -1;
+  if (panpulse <= panmin)  pandir = 1;
 
   // Update servo values at 50 Hz
   delay (20);
