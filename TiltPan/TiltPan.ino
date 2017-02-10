@@ -17,12 +17,12 @@ float tiltmin = 80;
 float tiltmax = 125;
 
 float panangle = 90;
-float panmin = 60;
-float panmax = 120;
+float panmin = 40;
+float panmax = 160;
 
 // Set up parameters for moving servos.
 int pandir = 1;
-int tiltdir = 0;
+int tiltdir = 1;
 float tiltrate = 1;
 float panrate = 1;
 

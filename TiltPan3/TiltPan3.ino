@@ -22,7 +22,7 @@ int tiltdir = 0;
 float tiltrate = 5;
 float panrate = 5;
 float tiltaccel = 5.0;
-float panaccel = 4.0;
+float panaccel = 9.0;
 
 
 void setup() {
@@ -33,9 +33,9 @@ void setup() {
   Serial.begin( 115200);
 }
 
-void printangles() {
-  Serial.print( "Tilt:");
-  Serial.print( tiltpulse);
+void printangles( float calcrate) {
+  Serial.print( "Rate:");
+  Serial.print( calcrate);
   Serial.print( "  Pan:");
   Serial.print( panpulse);
   Serial.println();
@@ -43,9 +43,15 @@ void printangles() {
 
 
 float rate( float pct, float accel) {
-  if (pct >= 0.5) {
+  if (pct >= 0.90) {
     pct = 1.0 - pct;
-  } 
+  } else if (pct <= 0.1) {
+    
+  } else {
+    pct = 1;
+  }
+
+  
   if (pct < 0.02) pct = 0.02;
   return pct * accel;
 }
@@ -53,7 +59,7 @@ float rate( float pct, float accel) {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //printangles();
+  float calculatedrate;
 
   // To write microsecond values, use servo.write( us)
   // To write degree values, use servo.write( degr)
@@ -64,8 +70,12 @@ void loop() {
   // direction and rate
   tiltpulse +=  tiltdir * tiltrate *
                 rate((tiltpulse-tiltmin)/(tiltmax-tiltmin), tiltaccel);
-  panpulse +=   pandir * panrate * 
-                rate((panpulse-panmin)/(panmax-panmin), panaccel);
+
+  calculatedrate = rate((panpulse-panmin)/(panmax-panmin), panaccel);
+  panpulse +=   pandir * panrate * calculatedrate;
+
+  printangles( calculatedrate);
+
 
   // Change direction at min or max values
   if (tiltpulse >= tiltmax) tiltdir = -1;

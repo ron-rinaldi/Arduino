@@ -17,7 +17,7 @@ float panmax = 2000;
 
 // Set up parameters for moving servos.
 int pandir = 1;
-int tiltdir = 0;
+int tiltdir = 1;
 float tiltrate = 5;
 float panrate = 5;
 
@@ -41,7 +41,7 @@ void printangles() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //printangles();
+  printangles();
 
   // To write microsecond values, use servo.write( us)
   // To write degree values, use servo.write( degr)
