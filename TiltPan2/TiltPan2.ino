@@ -7,7 +7,7 @@ const int panservoPin = 9;
 Servo tiltservo, panservo;
 
 // Set up initial values and range of motion.  Use microseconds
-float tiltpulse = 1700;
+float tiltpulse = 1750;
 float tiltmin = 1300;
 float tiltmax = 1800;
 
@@ -18,7 +18,7 @@ float panmax = 2000;
 // Set up parameters for moving servos.
 int pandir = 1;
 int tiltdir = 0;
-float tiltrate = 10;
+float tiltrate = 5;
 float panrate = 5;
 
 

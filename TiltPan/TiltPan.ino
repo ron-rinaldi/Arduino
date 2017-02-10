@@ -1,13 +1,18 @@
 
 #include <Servo.h>
 
+// NOTE: #define  vs  "const int"
+
+// #define tiltservoPin 10
+
 const int tiltservoPin = 10;
 const int panservoPin = 9;
+
 
 Servo tiltservo, panservo;
 
 // Set up initial values and range of motion
-float tiltangle = 90;
+float tiltangle = 120;
 float tiltmin = 80;
 float tiltmax = 125;
 
@@ -16,10 +21,10 @@ float panmin = 60;
 float panmax = 120;
 
 // Set up parameters for moving servos.
-int pandir = 0;
-int tiltdir = 1;
-float tiltrate = 0.5;
-float panrate = 0.5;
+int pandir = 1;
+int tiltdir = 0;
+float tiltrate = 1;
+float panrate = 1;
 
 
 void setup() {
@@ -40,7 +45,7 @@ void printangles() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //printangles();
+  printangles();
 
   // To write microsecond values, use servo.write( us)
   // To write degree values, use servo.write( degr)
@@ -60,6 +65,6 @@ void loop() {
   if (panangle <= panmin) pandir = 1;
 
   // Update servo values at 50 Hz
-  delay (20);
+  delay(20);
 }
 
