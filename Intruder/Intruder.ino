@@ -14,22 +14,21 @@ const int led1Pin = 5;
 const int led2Pin = 6;
 const int led3Pin = 7;
 
-const int use_serial = 0;
+const int use_serial = 1;
 
 const int leddistance1 = 30;
 const int leddistance2 = 60;
 const int leddistance3 = 120;
 
 void setup() {
-  // Setup I2C communication via slave #8
-  Wire.begin(8);                // join i2c bus with address #8
-  Wire.onRequest(requestEvent); // register event
-
+  // Serial port monitor
   if (use_serial) Serial.begin( 115200);
+  
   // Set up the ultrasonic sensor pins
   pinMode( trigPin, OUTPUT);
   pinMode( echoPin, INPUT);
-  // Set up the LED pin
+  
+  // Set up the LED pins
   pinMode(led1Pin, OUTPUT);
   pinMode(led2Pin, OUTPUT);
   pinMode(led3Pin, OUTPUT);
@@ -82,11 +81,4 @@ void loop() {
   delay(40); 
 }
 
-// function that executes whenever data is requested by 
-// master this function is registered as an event, 
-// see setup()
-void requestEvent() {
-  //Wire.write("1234\n "); // respond with message of 6 bytes
-  Wire.write( distance);
-  // as expected by master
-}
+
